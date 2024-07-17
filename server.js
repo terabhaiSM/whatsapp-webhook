@@ -54,10 +54,10 @@ app.post('/webhook', (req, res) => {
                         'Content-Type': 'application/json'
                     }
                 })
-                .then(response => {
+                .then(async (response) => {
                     const aiResponse = response.data.response;
                     messageHistory[senderId].push({ role: 'assistant', content: aiResponse });
-                    sendMessage(webhookEvent[0].from, aiResponse);
+                    await sendMessage(webhookEvent[0].from, aiResponse);
                 })
                 .catch(error => {
                     console.error('Error sending request to AI:', error.response ? error.response.data : error.message);
@@ -70,9 +70,9 @@ app.post('/webhook', (req, res) => {
 });
 
 // Send a message using WhatsApp API
-function sendMessage(senderId, message) {
+async function sendMessage(senderId, message) {
     const token = 'EAAQnRIh5TmkBO1nrNNb8jvkQ3Mei8sLiKTjZBpdhp7jcGhEs0TJCOBOPTrzqe4tESU4y4TOWuesLOWpRZAFvFKcC3b2TxZAdZCsJwt8GZCwNWdFOVDE5hJ8GKptCgkZCMbyI3kqZC31WyXrSK4CLZCZBQf1aBI77y8TAPZAiSS81oryljN4pSG5kSDmGKszdU4INzxsNy2c9ZB5jx7qY9hAvlMZD';
-    axios.post('https://graph.facebook.com/v19.0/383787901481888/messages',{
+    axios.post('https://graph.facebook.com/v19.0/414646331713489/messages',{
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
         "to": senderId,
