@@ -26,7 +26,7 @@ app.get('/*', (req, res) => {
 // Handle incoming messages
 app.post('/webhook', (req, res) => {
     console.log("request recieved");
-    console.log(req);
+    console.log(req.body.entry);
     const body = req.body;
 
     if (body.object === 'whatsapp_business_account') {
@@ -47,6 +47,7 @@ app.post('/webhook', (req, res) => {
 
                 // Prepare payload for curl request
                 const data = messageHistory[senderId];
+                console.log(data);
 
                 axios.post('http://23.94.44.137:80/chat-gpt/', data, {
                     headers: {
@@ -72,7 +73,7 @@ app.post('/webhook', (req, res) => {
 // Send a message using WhatsApp API
 function sendMessage(senderId, message) {
     const token = 'your-access-token';
-    axios.post('https://graph.facebook.com/v11.0/me/messages', {
+    axios.post('https://graph.facebook.com/v19.0/383787901481888/messages', {
         recipient: { id: senderId },
         message: { text: message }
     }, {
