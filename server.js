@@ -30,7 +30,6 @@ app.post('/webhook', (req, res) => {
     console.log(req.body.entry[0].changes[0].value.contacts);
 
     if (body.object === 'whatsapp_business_account') {
-        body.entry.forEach(entry => {
             console.log(req.body.entry.changes[0].value.contacts);
             console.log(req.body.entry.changes[0].value.contacts);
             console.log(req.body.entry.changes[0].value.metadata);
@@ -66,7 +65,6 @@ app.post('/webhook', (req, res) => {
                     console.error('Error sending request to AI:', error.response ? error.response.data : error.message);
                 });
             }
-        });
         res.status(200).send('EVENT_RECEIVED');
     } else {
         res.sendStatus(404);
