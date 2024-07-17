@@ -9,7 +9,6 @@ app.use(bodyParser.json());
 
 // Verify webhook (for WhatsApp API)
 app.get('/*', (req, res) => {
-    console.log(req);
     const mode = req.query['hub.mode'];
     const token = req.query['hub.verify_token'];
     const challenge = req.query['hub.challenge'];
@@ -38,8 +37,28 @@ app.post('/webhook', (req, res) => {
                 const senderId = webhookEvent.sender.id;
                 const messageText = webhookEvent.message.text;
 
-                // Process the message and respond
-                sendMessage(senderId, `You said: ${messageText}`);
+                // Add message to history
+                if (!messageHistory[senderId]) {
+                    messageHistory[senderId] = [];
+                }
+                messageHistory[senderId].push({ role: 'user', content: messageText });
+
+                // Prepare payload for curl request
+                const data = messageHistory[senderId];
+
+                axios.post('http://23.94.44.137:80/chat-gpt/', data, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    const aiResponse = response.data.response;
+                    messageHistory[senderId].push({ role: 'assistant', content: aiResponse });
+                    sendMessage(senderId, aiResponse);
+                })
+                .catch(error => {
+                    console.error('Error sending request to AI:', error.response ? error.response.data : error.message);
+                });
             }
         });
         res.status(200).send('EVENT_RECEIVED');
@@ -64,7 +83,7 @@ function sendMessage(senderId, message) {
         console.log('Message sent:', response.data);
     })
     .catch(error => {
-        console.error('Error sending message:', error.response.data);
+        console.error('Error sending message:', error.response ? error.response.data : error.message);
     });
 }
 
