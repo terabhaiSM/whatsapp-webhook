@@ -30,8 +30,10 @@ app.post('/webhook', (req, res) => {
 
     if (body.object === 'whatsapp_business_account') {
         body.entry.forEach(entry => {
-            console.log(req.body.entry.changes);
-            const webhookEvent = entry.changes;
+            console.log(req.body.entry.changes[0].value.contacts);
+            console.log(req.body.entry.changes[0].value.contacts);
+            console.log(req.body.entry.changes[0].value.metadata);
+            const webhookEvent = entry.changes[0].value.messages;
             console.log(webhookEvent);
 
             // Respond to messages
