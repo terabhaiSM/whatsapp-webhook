@@ -72,7 +72,7 @@ app.post('/webhook', (req, res) => {
 
 // Send a message using WhatsApp API
 function sendMessage(senderId, message) {
-    const token = 'your-access-token';
+    const token = 'EAAQnRIh5TmkBO1nrNNb8jvkQ3Mei8sLiKTjZBpdhp7jcGhEs0TJCOBOPTrzqe4tESU4y4TOWuesLOWpRZAFvFKcC3b2TxZAdZCsJwt8GZCwNWdFOVDE5hJ8GKptCgkZCMbyI3kqZC31WyXrSK4CLZCZBQf1aBI77y8TAPZAiSS81oryljN4pSG5kSDmGKszdU4INzxsNy2c9ZB5jx7qY9hAvlMZD';
     axios.post('https://graph.facebook.com/v19.0/383787901481888/messages', {
         recipient: { id: senderId },
         message: { text: message }
