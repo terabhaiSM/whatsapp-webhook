@@ -26,6 +26,7 @@ app.get('/*', (req, res) => {
 // Handle incoming messages
 app.post('/webhook', (req, res) => {
     console.log("request recieved");
+    console.log(req);
     const body = req.body;
 
     if (body.object === 'whatsapp_business_account') {
